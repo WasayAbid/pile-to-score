@@ -1,0 +1,10 @@
+{
+  "banana": {
+    "train_kept": 76,
+    "train_dropped": 36
+  },
+  "mango": {
+    "train_kept": 113,
+    "train_dropped": 151
+  }
+}

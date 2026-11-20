@@ -1,0 +1,25 @@
+# torch>=2.2.0 below with no index pulls PyPI's default CUDA build
+# (~2.5GB) on Linux, even though this service only ever runs inference on
+# CPU — the extra index below adds PyTorch's CPU-only wheels as an
+# additional source (not a replacement for PyPI, so every other package
+# here still resolves normally) (PRODUCTION_READINESS.md "ML Service" P2).
+# Unverified by an actual `pip install` in this pass (torch/ultralytics
+# aren't installed anywhere this session had access to) — the fix is the
+# standard, documented PyTorch CPU-install pattern, not guessed.
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12
+httpx>=0.27.0
+numpy>=1.26.0
+opencv-python-headless>=4.10.0
+pillow>=10.4.0
+ultralytics>=8.3.0
+git+https://github.com/ultralytics/CLIP.git@68dce32140994dfcb645a1320c4ebdc034fc19fd
+torch>=2.2.0
+torchvision>=0.17.0
+sentry-sdk[fastapi]>=2.20.0
+# flask moved to demo_web/requirements.txt — it's only used by that local
+# demo tool, not the API service this file installs for
+# (PRODUCTION_READINESS.md "ML Service" P2: "shouldn't be in the API image").
