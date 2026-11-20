@@ -1,10 +1,10 @@
 # Pile-to-Score
 
-**Basket-level freshness assessment of market-stall produce via decoupled instance segmentation and crop-level ripeness classification.**
+**Estimating basket-level visual freshness of market-stall produce via decoupled instance segmentation and crop-level ripeness classification.**
 
 Muhammad Abdul Wasay Abid — Faculty of Information Technology, University of Central Punjab, Lahore, Pakistan
 
-This repository accompanies the preprint *"Pile-to-Score: Basket-Level Freshness Assessment of Market-Stall Produce via Decoupled Instance Segmentation and Crop-Level Ripeness Classification"* (2026). It contains the trained models, inference pipeline, evaluation scripts and every result reported in the paper.
+This repository accompanies the preprint *"Pile-to-Score: Estimating Basket-Level Visual Freshness of Market-Stall Produce via Decoupled Instance Segmentation and Crop-Level Ripeness Classification"* (2026). It contains the trained models, inference pipeline, evaluation scripts and every result reported in the paper.
 
 ```
 Stall photo ─► Stage 1: class-agnostic YOLOv8m-seg ─► padded crop per fruit
@@ -18,18 +18,17 @@ Download from the [**v1.0 release**](https://github.com/WasayAbid/pile-to-score/
 
 | Fruit | Stage | File | Classes | Held-out result |
 |-------|-------|------|---------|-----------------|
-| Banana | 1 · segmentation | [`banana_stall_seg.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/banana_stall_seg.pt) | fruit | see leak-free model below |
+| Banana | 1 · segmentation | [`banana_stall_seg.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/banana_stall_seg.pt) | fruit | test split contaminated — use leak-free result |
 | Banana | 1 · segmentation (leak-free) | [`banana_stall_seg_leakfree.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/banana_stall_seg_leakfree.pt) | fruit | 82.1 mask mAP50 |
 | Banana | 2 · ripeness | [`banana_ripeness_c3a2v.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/banana_ripeness_c3a2v.pt) | 6 | 98.6% top-1 (test) |
-| Mango | 1 · segmentation | [`mango_stall_seg.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/mango_stall_seg.pt) | fruit | see leak-free model below |
-| Mango | 1 · segmentation (leak-free) | [`mango_stall_seg_leakfree.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/mango_stall_seg_leakfree.pt) | fruit | 94.6 mask mAP50 |
+| Mango | 1 · segmentation | [`mango_stall_seg.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/mango_stall_seg.pt) | fruit | 94.2 mask mAP50 (test) |
 | Mango | 2 · ripeness | [`mango_ripeness_cadimedia.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/mango_ripeness_cadimedia.pt) | 4 | 92.0% top-1 (test) |
 | Tomato | 1 · segmentation | [`tomato_stall_seg.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/tomato_stall_seg.pt) | fruit | 87.5 mask mAP50 (logged) |
 | Tomato | 2 · ripeness | [`tomato_ripeness.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/tomato_ripeness.pt) | 4 | 99.4% top-1 (val) |
 | Apple | 1 · segmentation | [`apple_stall_seg.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/apple_stall_seg.pt) | fruit | 80.4 mask mAP50 (test) |
 | Apple | 2 · freshness | [`apple_cls.pt`](https://github.com/WasayAbid/pile-to-score/releases/download/v1.0/apple_cls.pt) | 2 | not independently evaluated |
 
-The production pipeline uses the full-data segmentation models. The `_leakfree` models were retrained after removing training images that near-duplicate held-out images (Sec. 6.2 of the paper) and are provided so the leak-free numbers can be reproduced.
+The prototype pipeline uses the full-data segmentation models. `banana_stall_seg_leakfree.pt` was retrained after removing training images that duplicate the banana validation/test images (Sec. 6.2 of the paper); it gives the honest held-out banana estimate. Tomato classifier results are validation results (the dataset has no test split). The basket score is a heuristic and has not been validated against human graders. See `results/NOTES.md` for which result files are authoritative.
 
 ## Repository layout
 
@@ -60,7 +59,7 @@ cls = YOLO("banana_ripeness_c3a2v.pt")   # ripeness of one crop
 
 ## Datasets
 
-The Stage 1 stall-segmentation datasets were built by the author from market photographs. The Stage 2 classifiers were trained on public datasets: [banana-ripeness-c3a2v](https://universe.roboflow.com/mahasarakham-university-yeff9/banana-ripeness-c3a2v), [MangoRipenessDetection](https://universe.roboflow.com/cadimedia/mangoripenessdetection), VegNet (tomato) and a public apple fresh/rotten dataset. Datasets are not redistributed here; see their original licences.
+The Stage 1 stall-segmentation datasets were built by the author from market photographs. The Stage 2 classifiers were trained on public datasets: [banana-ripeness-c3a2v](https://universe.roboflow.com/mahasarakham-university-yeff9/banana-ripeness-c3a2v), [MangoRipenessDetection](https://universe.roboflow.com/cadimedia/mangoripenessdetection), [VegNet](https://data.mendeley.com/datasets/6nxnjbn9w6/1) (tomato; Suryawanshi et al., Data in Brief 2022) and a public apple fresh/rotten dataset. Datasets are not redistributed here; see their original licences.
 
 ## Licence
 
@@ -70,7 +69,7 @@ AGPL-3.0, consistent with the [Ultralytics](https://github.com/ultralytics/ultra
 
 ```bibtex
 @misc{abid2026piletoscore,
-  title  = {Pile-to-Score: Basket-Level Freshness Assessment of Market-Stall Produce via
+  title  = {Pile-to-Score: Estimating Basket-Level Visual Freshness of Market-Stall Produce via
             Decoupled Instance Segmentation and Crop-Level Ripeness Classification},
   author = {Abid, Muhammad Abdul Wasay},
   year   = {2026},
