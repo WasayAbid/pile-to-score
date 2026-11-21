@@ -1,5 +1,7 @@
 # Pile-to-Score
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24420302.svg)](https://doi.org/10.5281/zenodo.24420302)
+
 **Estimating basket-level visual quality of market-stall produce via decoupled instance segmentation and crop-level ripeness classification.**
 
 Muhammad Abdul Wasay Abid (Faculty of Information Technology, University of Central Punjab, Lahore, Pakistan) · Ali Affan Virk (University of Maryland, Baltimore County)
@@ -73,6 +75,8 @@ AGPL-3.0, consistent with the [Ultralytics](https://github.com/ultralytics/ultra
             Decoupled Instance Segmentation and Crop-Level Ripeness Classification},
   author = {Abid, Muhammad Abdul Wasay and Virk, Ali Affan},
   year   = {2026},
-  url    = {https://github.com/WasayAbid/pile-to-score}
+  publisher = {Zenodo},
+  doi    = {10.5281/zenodo.24420302},
+  url    = {https://doi.org/10.5281/zenodo.24420302}
 }
 ```
