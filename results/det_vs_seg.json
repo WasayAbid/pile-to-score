@@ -9,7 +9,7 @@
     "size_MB": 52.022226,
     "gpu_ms": 22.66953636370255,
     "cpu_ms": 175.46577272729667,
-    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\banana_det_p2\\weights\\best.pt"
+    "weights": "train_runs/banana_det_p2/weights/best.pt"
   },
   "banana_seg": {
     "box_mAP50": 0.8384570749686105,
@@ -21,7 +21,7 @@
     "size_MB": 54.814108,
     "gpu_ms": 27.750045454674613,
     "cpu_ms": 269.2523090906682,
-    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\banana_p2\\weights\\best.pt"
+    "weights": "train_runs/banana_p2/weights/best.pt"
   },
   "mango_det": {
     "box_mAP50": 0.9379671646685204,
@@ -33,7 +33,7 @@
     "size_MB": 52.032786,
     "gpu_ms": 25.837772727424056,
     "cpu_ms": 206.1883636365978,
-    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\mango_det_p2\\weights\\best.pt"
+    "weights": "train_runs/mango_det_p2/weights/best.pt"
   },
   "mango_seg": {
     "box_mAP50": 0.9391828116029755,
@@ -45,7 +45,7 @@
     "size_MB": 54.825564,
     "gpu_ms": 33.17581818191684,
     "cpu_ms": 287.7571272727602,
-    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\mango_seg_p2\\weights\\best.pt"
+    "weights": "train_runs/mango_seg_p2/weights/best.pt"
   },
   "apple_det": {
     "box_mAP50": 0.8037070154694491,
@@ -57,7 +57,7 @@
     "size_MB": 52.032786,
     "gpu_ms": 30.976253846557274,
     "cpu_ms": 378.6191769227466,
-    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\apple_det_p2\\weights\\best.pt"
+    "weights": "train_runs/apple_det_p2/weights/best.pt"
   },
   "apple_seg": {
     "box_mAP50": 0.7957400672566166,
@@ -69,6 +69,6 @@
     "size_MB": 54.830428,
     "gpu_ms": 37.00443846229553,
     "cpu_ms": 336.17987692307975,
-    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\apple_seg_p2\\weights\\best.pt"
+    "weights": "train_runs/apple_seg_p2/weights/best.pt"
   }
 }
