@@ -17,11 +17,20 @@
 \captionsetup{font=small,labelfont=bf}
 
 \title{\textbf{Pile-to-Score: Estimating Basket-Level Visual Quality of Market-Stall Produce via Decoupled Instance Segmentation and Crop-Level Ripeness Classification}}
-\author{\textbf{Muhammad Abdul Wasay Abid}\\[2pt]
-\small Faculty of Information Technology, University of Central Punjab, Lahore, Pakistan\\
-\small \texttt{abdulwasayabid.801@gmail.com}\\
-\small Code \& models: \url{https://github.com/WasayAbid/pile-to-score}}
-\date{November 2026}
+\author{%
+\begin{tabular}[t]{c}
+\small\textbf{Muhammad Abdul Wasay Abid}\\[1pt]
+\footnotesize Faculty of Information Technology\\
+\footnotesize University of Central Punjab, Lahore, Pakistan\\
+\footnotesize\texttt{abdulwasayabid.801@gmail.com}
+\end{tabular}
+\hspace{2.5em}
+\begin{tabular}[t]{c}
+\small\textbf{Ali Affan Virk}\\[1pt]
+\footnotesize University of Maryland, Baltimore County\\
+\footnotesize Baltimore, MD, USA
+\end{tabular}}
+\date{\vspace{-4pt}\footnotesize Code \& models: \url{https://github.com/WasayAbid/pile-to-score}\\[1pt]\footnotesize November 2026}
 \raggedbottom
 
 \begin{document}
@@ -91,7 +100,7 @@ We use the medium (``m'') YOLOv8 variant as an accuracy--computational cost trad
 Each crop is resized to $224\times224$ and classified by a fruit-specific YOLOv8m-cls model (ImageNet-pretrained). Taxonomies follow the source datasets (Table~\ref{tab:weights}). For mango, an HSV heuristic for large dark lesions can additionally raise a warning, because the mango taxonomy has no \emph{rotten} class; in basket mode it does not change the score.
 
 \subsection{Basket-level aggregation (heuristic)}
-Let a photograph contain $N$ accepted crops with predicted classes $c_i$ and top-1 softmax confidences $p_i$. Each class has a hand-set \emph{visual-quality weight} $w(c)\in[0,1]$ (Table~\ref{tab:weights}). The weights were chosen by the author to preserve a saleability ordering: ready-to-sell $>$ near-ready $>$ unripe $>$ past-prime $>$ spoiled. They have not been fitted to data. The base score is the arithmetic mean of confidence-adjusted weights,
+Let a photograph contain $N$ accepted crops with predicted classes $c_i$ and top-1 softmax confidences $p_i$. Each class has a hand-set \emph{visual-quality weight} $w(c)\in[0,1]$ (Table~\ref{tab:weights}). The weights were chosen by the first author to preserve a saleability ordering: ready-to-sell $>$ near-ready $>$ unripe $>$ past-prime $>$ spoiled. They have not been fitted to data. The base score is the arithmetic mean of confidence-adjusted weights,
 \begin{equation}
   B = \frac{100}{N}\sum_{i=1}^{N} w(c_i)\,p_i .
 \end{equation}
@@ -145,7 +154,7 @@ A score from a bad photograph is worse than no score. The result is \emph{blocke
 The models are served by a FastAPI service (\texttt{/v1/freshness}, \texttt{/v1/freshness/url}). In a pre-release React Native vendor application, a vendor photographs produce when listing it; a serverless function forwards the image and stores the score, tier, class histogram and piece count with the listing. The application also lets vendors rate each score from 1 to 5, a channel intended for future human-aligned evaluation; no ratings have been collected yet.
 
 \section{Datasets}\label{sec:data}
-Table~\ref{tab:data} lists all data. \textbf{Stage~1} datasets were built by the author from market and stall photographs collected from the web, plus approximately 30 photographs taken by the author, annotated with instance polygons on Roboflow and exported with Roboflow augmentation. Augmentation (three variants per source photograph) was applied to the mango, tomato and apple \emph{training} splits only; validation and test images are unaugmented. Counting each source photograph once, the four datasets contain \textbf{445 unique source photographs}: banana 112, mango 110 ($88+11+11$), tomato 118 ($69+31+18$) and apple 105 ($68+21+16$). For banana, the 33 validation and test images duplicate training images (Sec.~\ref{sec:results}), so its 145 files contain only 112 unique photographs. The three locally archived exports contain 8{,}709 (banana), 6{,}914 (mango) and 17{,}096 (apple) annotated instances across all splits, including augmented copies; the tomato training export was not archived (Sec.~\ref{sec:results}).
+Table~\ref{tab:data} lists all data. \textbf{Stage~1} datasets were built by the first author from market and stall photographs collected from the web, plus approximately 30 photographs taken by the first author, annotated with instance polygons on Roboflow and exported with Roboflow augmentation. Augmentation (three variants per source photograph) was applied to the mango, tomato and apple \emph{training} splits only; validation and test images are unaugmented. Counting each source photograph once, the four datasets contain \textbf{445 unique source photographs}: banana 112, mango 110 ($88+11+11$), tomato 118 ($69+31+18$) and apple 105 ($68+21+16$). For banana, the 33 validation and test images duplicate training images (Sec.~\ref{sec:results}), so its 145 files contain only 112 unique photographs. The three locally archived exports contain 8{,}709 (banana), 6{,}914 (mango) and 17{,}096 (apple) annotated instances across all splits, including augmented copies; the tomato training export was not archived (Sec.~\ref{sec:results}).
 
 \textbf{Stage~2} classifiers use public single-fruit datasets totalling 16{,}844 images (banana 5{,}616; mango 1{,}996; tomato 7{,}226; apple 2{,}006). These counts include each provider's own augmented copies, so the number of independent fruit photographs is smaller; we quantify this with the near-duplicate audit in Sec.~\ref{sec:results}.
 

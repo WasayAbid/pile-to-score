@@ -2,7 +2,7 @@
 
 **Estimating basket-level visual quality of market-stall produce via decoupled instance segmentation and crop-level ripeness classification.**
 
-Muhammad Abdul Wasay Abid — Faculty of Information Technology, University of Central Punjab, Lahore, Pakistan
+Muhammad Abdul Wasay Abid (Faculty of Information Technology, University of Central Punjab, Lahore, Pakistan) · Ali Affan Virk (University of Maryland, Baltimore County)
 
 This repository accompanies the preprint *"Pile-to-Score: Estimating Basket-Level Visual Quality of Market-Stall Produce via Decoupled Instance Segmentation and Crop-Level Ripeness Classification"* (2026). It contains the trained models, inference pipeline, evaluation scripts and every result reported in the paper.
 
@@ -71,7 +71,7 @@ AGPL-3.0, consistent with the [Ultralytics](https://github.com/ultralytics/ultra
 @misc{abid2026piletoscore,
   title  = {Pile-to-Score: Estimating Basket-Level Visual Quality of Market-Stall Produce via
             Decoupled Instance Segmentation and Crop-Level Ripeness Classification},
-  author = {Abid, Muhammad Abdul Wasay},
+  author = {Abid, Muhammad Abdul Wasay and Virk, Ali Affan},
   year   = {2026},
   url    = {https://github.com/WasayAbid/pile-to-score}
 }
