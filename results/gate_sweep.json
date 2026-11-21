@@ -1,0 +1,191 @@
+{
+  "banana": {
+    "conf0.3": {
+      "accepted": 17,
+      "rejected": 8
+    },
+    "conf0.38": {
+      "accepted": 17,
+      "rejected": 8
+    },
+    "conf0.45": {
+      "accepted": 17,
+      "rejected": 8
+    },
+    "conf0.5": {
+      "accepted": 17,
+      "rejected": 8
+    },
+    "reasons": {
+      "None": 16,
+      "no_segments": 5,
+      "too_few_segments": 3,
+      "low_freshness": 1
+    },
+    "mean_conf_sorted": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.84,
+      0.84,
+      0.85,
+      0.85,
+      0.86,
+      0.86,
+      0.88,
+      0.89,
+      0.89,
+      0.89,
+      0.89,
+      0.9,
+      0.91,
+      0.91,
+      0.91,
+      0.95,
+      0.96,
+      0.96,
+      0.98,
+      1.0
+    ]
+  },
+  "tomato": {
+    "conf0.3": {
+      "accepted": 9,
+      "rejected": 16
+    },
+    "conf0.38": {
+      "accepted": 9,
+      "rejected": 16
+    },
+    "conf0.45": {
+      "accepted": 9,
+      "rejected": 16
+    },
+    "conf0.5": {
+      "accepted": 9,
+      "rejected": 16
+    },
+    "reasons": {
+      "None": 4,
+      "low_freshness": 5,
+      "too_few_segments": 3,
+      "no_segments": 13
+    },
+    "mean_conf_sorted": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.74,
+      0.78,
+      0.87,
+      0.89,
+      0.92,
+      0.92,
+      0.93,
+      0.94,
+      0.94,
+      0.95,
+      0.99,
+      1.0
+    ]
+  },
+  "mango": {
+    "conf0.3": {
+      "accepted": 24,
+      "rejected": 1
+    },
+    "conf0.38": {
+      "accepted": 24,
+      "rejected": 1
+    },
+    "conf0.45": {
+      "accepted": 24,
+      "rejected": 1
+    },
+    "conf0.5": {
+      "accepted": 24,
+      "rejected": 1
+    },
+    "reasons": {
+      "None": 23,
+      "low_freshness": 1,
+      "too_few_segments": 1
+    },
+    "mean_conf_sorted": [
+      0.52,
+      0.61,
+      0.71,
+      0.73,
+      0.73,
+      0.73,
+      0.73,
+      0.73,
+      0.75,
+      0.76,
+      0.76,
+      0.78,
+      0.79,
+      0.79,
+      0.8,
+      0.81,
+      0.81,
+      0.82,
+      0.83,
+      0.85,
+      0.91,
+      0.93,
+      0.93,
+      0.94,
+      0.95
+    ]
+  },
+  "apple": {
+    "conf0.3": {
+      "accepted": 14,
+      "rejected": 0
+    },
+    "conf0.38": {
+      "accepted": 14,
+      "rejected": 0
+    },
+    "conf0.45": {
+      "accepted": 14,
+      "rejected": 0
+    },
+    "conf0.5": {
+      "accepted": 14,
+      "rejected": 0
+    },
+    "reasons": {
+      "None": 14
+    },
+    "mean_conf_sorted": [
+      0.91,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  }
+}

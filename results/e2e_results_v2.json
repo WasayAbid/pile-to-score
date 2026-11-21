@@ -1,0 +1,1219 @@
+{
+  "banana": {
+    "n_images": 25,
+    "mean_ms_cpu": 859.9486333334122,
+    "mean_pieces": 20.96,
+    "rows": [
+      {
+        "file": "-1mqgntr5o5-250.jpg",
+        "ms": 4767.519099999845,
+        "n": 4,
+        "mean_conf": 0.913,
+        "reason": null,
+        "score": 48,
+        "tier": "Low Freshness",
+        "hist": {
+          "freshunripe": 3,
+          "rotten": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "1 (1).webp",
+        "ms": 962.6298000002862,
+        "n": 18,
+        "mean_conf": 0.902,
+        "reason": null,
+        "score": 68,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "freshripe": 13,
+          "rotten": 4,
+          "ripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "1.webp",
+        "ms": 2516.1157000002277,
+        "n": 84,
+        "mean_conf": 0.887,
+        "reason": null,
+        "score": 83,
+        "tier": "Fresh",
+        "hist": {
+          "rotten": 7,
+          "freshripe": 73,
+          "freshunripe": 3,
+          "overripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "73953947-bananas-on-a-fruit-stand-in-old-havana-cuba.jpg",
+        "ms": 1873.6759000003076,
+        "n": 63,
+        "mean_conf": 0.889,
+        "reason": null,
+        "score": 50,
+        "tier": "Low Freshness",
+        "hist": {
+          "freshunripe": 4,
+          "freshripe": 30,
+          "rotten": 20,
+          "overripe": 9
+        },
+        "retake": false
+      },
+      {
+        "file": "banana-fruit-vegetable-shop-pakistan-good-health-diet-153706658.webp",
+        "ms": 1624.0933000008226,
+        "n": 54,
+        "mean_conf": 0.855,
+        "reason": null,
+        "score": 45,
+        "tier": "Low Freshness",
+        "hist": {
+          "rotten": 23,
+          "freshripe": 28,
+          "freshunripe": 2,
+          "overripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "bananas-fruit-big-harvest-ripe-yellow-banana-68342781.webp",
+        "ms": 2331.7800000004354,
+        "n": 78,
+        "mean_conf": 0.961,
+        "reason": null,
+        "score": 95,
+        "tier": "Premium Fresh",
+        "hist": {
+          "freshripe": 76,
+          "overripe": 1,
+          "freshunripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "clusters-of-ripe-yellow-bananas-photographed-on-a-fruit-market-overripe-banana-tropical-fruits-healthy-lifestyle-concept-source-o.jpg",
+        "ms": 1938.9068000000407,
+        "n": 58,
+        "mean_conf": 0.884,
+        "reason": null,
+        "score": 47,
+        "tier": "Low Freshness",
+        "hist": {
+          "freshripe": 32,
+          "rotten": 26
+        },
+        "retake": false
+      },
+      {
+        "file": "free-fair-street-market-stall-with-banana-fruit-traditional-brazilian-free-fair-2M7JYXX.jpg",
+        "ms": 2581.0490000003483,
+        "n": 97,
+        "mean_conf": 0.89,
+        "reason": null,
+        "score": 42,
+        "tier": "Low Freshness",
+        "hist": {
+          "freshripe": 41,
+          "rotten": 44,
+          "overripe": 7,
+          "freshunripe": 5
+        },
+        "retake": false
+      },
+      {
+        "file": "free-photo-of-fruit-vendor-in-indian-market-with-assorted-produce.jpeg",
+        "ms": 483.6706999994931,
+        "n": 8,
+        "mean_conf": 0.912,
+        "reason": null,
+        "score": 78,
+        "tier": "Fresh",
+        "hist": {
+          "freshripe": 7,
+          "rotten": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (1).jpg",
+        "ms": 288.89039999921806,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (10).jpg",
+        "ms": 386.3101999995706,
+        "n": 3,
+        "mean_conf": 0.89,
+        "reason": null,
+        "score": 63,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "rotten": 1,
+          "freshripe": 2
+        },
+        "retake": false
+      },
+      {
+        "file": "images (100).jpg",
+        "ms": 435.6941000005463,
+        "n": 4,
+        "mean_conf": 0.963,
+        "reason": null,
+        "score": 96,
+        "tier": "Premium Fresh",
+        "hist": {
+          "freshripe": 4
+        },
+        "retake": false
+      },
+      {
+        "file": "images (11).jpg",
+        "ms": 294.70580000088376,
+        "n": 1,
+        "mean_conf": 0.95,
+        "reason": "too_few_segments",
+        "score": 71,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "freshunripe": 1
+        },
+        "retake": true
+      },
+      {
+        "file": "images (12).jpg",
+        "ms": 370.85839999963355,
+        "n": 1,
+        "mean_conf": 0.978,
+        "reason": "too_few_segments",
+        "score": 98,
+        "tier": "Premium Fresh",
+        "hist": {
+          "freshripe": 1
+        },
+        "retake": true
+      },
+      {
+        "file": "images (13).jpg",
+        "ms": 264.51389999965613,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (14).jpg",
+        "ms": 332.6598000003287,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (15).jpg",
+        "ms": 332.26229999854695,
+        "n": 2,
+        "mean_conf": 0.864,
+        "reason": "too_few_segments",
+        "score": 64,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "overripe": 1,
+          "freshripe": 1
+        },
+        "retake": true
+      },
+      {
+        "file": "images (16).jpg",
+        "ms": 662.9783000007592,
+        "n": 9,
+        "mean_conf": 0.849,
+        "reason": "low_freshness",
+        "score": 16,
+        "tier": "Poor Quality",
+        "hist": {
+          "rotten": 8,
+          "freshripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (17).jpg",
+        "ms": 400.42600000015227,
+        "n": 4,
+        "mean_conf": 0.999,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "freshripe": 4
+        },
+        "retake": false
+      },
+      {
+        "file": "images (18).jpg",
+        "ms": 481.8498999993608,
+        "n": 8,
+        "mean_conf": 0.844,
+        "reason": null,
+        "score": 36,
+        "tier": "Poor Quality",
+        "hist": {
+          "freshripe": 3,
+          "rotten": 5
+        },
+        "retake": false
+      },
+      {
+        "file": "images (19).jpg",
+        "ms": 228.32850000122562,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (2).jpg",
+        "ms": 278.21829999993497,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (20).jpg",
+        "ms": 428.3600999988266,
+        "n": 7,
+        "mean_conf": 0.911,
+        "reason": null,
+        "score": 88,
+        "tier": "Fresh",
+        "hist": {
+          "ripe": 1,
+          "freshripe": 5,
+          "freshunripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (21).jpg",
+        "ms": 583.9555000002292,
+        "n": 12,
+        "mean_conf": 0.836,
+        "reason": null,
+        "score": 36,
+        "tier": "Poor Quality",
+        "hist": {
+          "rotten": 7,
+          "freshripe": 5
+        },
+        "retake": false
+      },
+      {
+        "file": "images (22).jpg",
+        "ms": 556.8345000010595,
+        "n": 9,
+        "mean_conf": 0.859,
+        "reason": null,
+        "score": 55,
+        "tier": "Low Freshness",
+        "hist": {
+          "overripe": 1,
+          "rotten": 3,
+          "freshripe": 5
+        },
+        "retake": false
+      }
+    ]
+  },
+  "tomato": {
+    "n_images": 25,
+    "mean_ms_cpu": 434.8474458333082,
+    "mean_pieces": 8.88,
+    "rows": [
+      {
+        "file": "4651160-1963890391.jpg",
+        "ms": 2137.731299999359,
+        "n": 60,
+        "mean_conf": 0.892,
+        "reason": null,
+        "score": 66,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 47,
+          "damaged": 13
+        },
+        "retake": false
+      },
+      {
+        "file": "5dd49a04b311b (1).jpg",
+        "ms": 2353.1770999998116,
+        "n": 85,
+        "mean_conf": 0.925,
+        "reason": "low_freshness",
+        "score": 20,
+        "tier": "Poor Quality",
+        "hist": {
+          "damaged": 50,
+          "ripe": 24,
+          "unripe": 11
+        },
+        "retake": false
+      },
+      {
+        "file": "618b28410f6c1.jpg",
+        "ms": 462.70000000004075,
+        "n": 5,
+        "mean_conf": 0.916,
+        "reason": "low_freshness",
+        "score": 17,
+        "tier": "Poor Quality",
+        "hist": {
+          "damaged": 3,
+          "ripe": 1,
+          "unripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "gettyimages-2166140992-612x612.jpg",
+        "ms": 1447.2829999995156,
+        "n": 43,
+        "mean_conf": 0.921,
+        "reason": null,
+        "score": 39,
+        "tier": "Poor Quality",
+        "hist": {
+          "ripe": 25,
+          "damaged": 18
+        },
+        "retake": false
+      },
+      {
+        "file": "images (1).jpg",
+        "ms": 308.3924999991723,
+        "n": 3,
+        "mean_conf": 0.74,
+        "reason": null,
+        "score": 40,
+        "tier": "Low Freshness",
+        "hist": {
+          "damaged": 1,
+          "ripe": 2
+        },
+        "retake": false
+      },
+      {
+        "file": "images (10).jpg",
+        "ms": 255.21440000011353,
+        "n": 1,
+        "mean_conf": 0.995,
+        "reason": "too_few_segments",
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "ripe": 1
+        },
+        "retake": true
+      },
+      {
+        "file": "images (11).jpg",
+        "ms": 285.82970000024943,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (12).jpg",
+        "ms": 230.97380000035628,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (13).jpg",
+        "ms": 273.50120000119205,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (14).jpg",
+        "ms": 276.8844000001991,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (15).jpg",
+        "ms": 307.9478999989078,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (16).jpg",
+        "ms": 347.23459999986517,
+        "n": 1,
+        "mean_conf": 0.953,
+        "reason": "too_few_segments",
+        "score": 95,
+        "tier": "Premium Fresh",
+        "hist": {
+          "ripe": 1
+        },
+        "retake": true
+      },
+      {
+        "file": "images (17).jpg",
+        "ms": 235.563700000057,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (18).jpg",
+        "ms": 269.6562000000995,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (19).jpg",
+        "ms": 360.41499999919324,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (2).jpg",
+        "ms": 264.5437999999558,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (20).jpg",
+        "ms": 299.3898000004265,
+        "n": 3,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "ripe": 3
+        },
+        "retake": false
+      },
+      {
+        "file": "images (21).jpg",
+        "ms": 252.1193000011408,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (22).jpg",
+        "ms": 279.64070000052743,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (23).jpg",
+        "ms": 233.8759000012942,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (24).jpg",
+        "ms": 427.01559999841265,
+        "n": 9,
+        "mean_conf": 0.874,
+        "reason": "low_freshness",
+        "score": 0,
+        "tier": "Poor Quality",
+        "hist": {
+          "damaged": 8,
+          "ripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (25).jpg",
+        "ms": 275.64710000115156,
+        "n": 0,
+        "mean_conf": 0.0,
+        "reason": "no_segments",
+        "score": 0,
+        "tier": "",
+        "hist": {},
+        "retake": true
+      },
+      {
+        "file": "images (26).jpg",
+        "ms": 249.49679999917862,
+        "n": 1,
+        "mean_conf": 0.783,
+        "reason": "too_few_segments",
+        "score": 0,
+        "tier": "Poor Quality",
+        "hist": {
+          "damaged": 1
+        },
+        "retake": true
+      },
+      {
+        "file": "images (27).jpg",
+        "ms": 395.7174999995914,
+        "n": 8,
+        "mean_conf": 0.937,
+        "reason": "low_freshness",
+        "score": 0,
+        "tier": "Poor Quality",
+        "hist": {
+          "damaged": 8
+        },
+        "retake": false
+      },
+      {
+        "file": "images (28).jpg",
+        "ms": 344.11869999894407,
+        "n": 3,
+        "mean_conf": 0.945,
+        "reason": "low_freshness",
+        "score": 21,
+        "tier": "Poor Quality",
+        "hist": {
+          "damaged": 2,
+          "ripe": 1
+        },
+        "retake": false
+      }
+    ]
+  },
+  "mango": {
+    "n_images": 25,
+    "mean_ms_cpu": 763.0360749999454,
+    "mean_pieces": 20.04,
+    "rows": [
+      {
+        "file": "1741203830355.jpg",
+        "ms": 2071.756199999072,
+        "n": 51,
+        "mean_conf": 0.762,
+        "reason": null,
+        "score": 59,
+        "tier": "Low Freshness",
+        "hist": {
+          "partially_ripe": 33,
+          "overripe": 4,
+          "ripe": 14
+        },
+        "retake": false
+      },
+      {
+        "file": "1755554-image-1531332945-412x290.webp",
+        "ms": 1028.0155000000377,
+        "n": 26,
+        "mean_conf": 0.612,
+        "reason": null,
+        "score": 58,
+        "tier": "Low Freshness",
+        "hist": {
+          "ripe": 15,
+          "partially_ripe": 11
+        },
+        "retake": false
+      },
+      {
+        "file": "close-pile-tasty-fresh-mangoes-260nw-2704514805.webp",
+        "ms": 909.7434000013891,
+        "n": 25,
+        "mean_conf": 0.806,
+        "reason": null,
+        "score": 72,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "partially_ripe": 15,
+          "ripe": 8,
+          "unripe": 2
+        },
+        "retake": false
+      },
+      {
+        "file": "close-up-of-colorful-fruit-stand-with-piles-of-mangoes-2FNT6GG.jpg",
+        "ms": 1016.7264000010618,
+        "n": 29,
+        "mean_conf": 0.733,
+        "reason": null,
+        "score": 62,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 19,
+          "overripe": 2,
+          "partially_ripe": 8
+        },
+        "retake": false
+      },
+      {
+        "file": "crate-mangoes-very-yellow-skins-naturally-sweet-fruits-day-to-buy-fruit-market-natural-nutritious-food-343018744.webp",
+        "ms": 952.8786999999284,
+        "n": 25,
+        "mean_conf": 0.754,
+        "reason": null,
+        "score": 75,
+        "tier": "Fresh",
+        "hist": {
+          "ripe": 24,
+          "partially_ripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "free-photo-of-basket-of-fresh-ripe-mangoes-in-rustic-setting.jpeg",
+        "ms": 728.777700000137,
+        "n": 20,
+        "mean_conf": 0.791,
+        "reason": null,
+        "score": 76,
+        "tier": "Fresh",
+        "hist": {
+          "partially_ripe": 1,
+          "ripe": 18,
+          "overripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "fresh-mangoes-arranged-crates-local-260nw-2520270875.webp",
+        "ms": 847.5167999986297,
+        "n": 22,
+        "mean_conf": 0.824,
+        "reason": null,
+        "score": 74,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "partially_ripe": 13,
+          "ripe": 9
+        },
+        "retake": false
+      },
+      {
+        "file": "fresh-ripe-yellow-mangoes-stacked-260nw-2725001993.webp",
+        "ms": 722.6140000002488,
+        "n": 17,
+        "mean_conf": 0.932,
+        "reason": null,
+        "score": 93,
+        "tier": "Premium Fresh",
+        "hist": {
+          "ripe": 17
+        },
+        "retake": false
+      },
+      {
+        "file": "fresh-tropical-fruits-at-a-roadside-juice-stall-in-the-philippines-including-mangoes-pineapples-coconuts-and-watermelon-3E2A0KA.jpg",
+        "ms": 1600.1016999998683,
+        "n": 49,
+        "mean_conf": 0.808,
+        "reason": null,
+        "score": 68,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 19,
+          "unripe": 8,
+          "partially_ripe": 21,
+          "overripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "fresh-yellow-mango-pile-market-table-ripe-tropical-fruit-closeup-asian-stall-philippine-season-sell-south-asia-agriculture-226059912.webp",
+        "ms": 1301.6571000007389,
+        "n": 40,
+        "mean_conf": 0.935,
+        "reason": null,
+        "score": 93,
+        "tier": "Premium Fresh",
+        "hist": {
+          "ripe": 40
+        },
+        "retake": false
+      },
+      {
+        "file": "gettyimages-2024802271-1024x1024.jpg",
+        "ms": 1273.636300000362,
+        "n": 39,
+        "mean_conf": 0.732,
+        "reason": "low_freshness",
+        "score": 24,
+        "tier": "Poor Quality",
+        "hist": {
+          "ripe": 20,
+          "overripe": 18,
+          "partially_ripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "gettyimages-71013639-612x612.jpg",
+        "ms": 528.9616999998543,
+        "n": 8,
+        "mean_conf": 0.708,
+        "reason": null,
+        "score": 68,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 5,
+          "partially_ripe": 3
+        },
+        "retake": false
+      },
+      {
+        "file": "hq720.jpg",
+        "ms": 924.8052000002644,
+        "n": 27,
+        "mean_conf": 0.76,
+        "reason": null,
+        "score": 74,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 22,
+          "partially_ripe": 5
+        },
+        "retake": false
+      },
+      {
+        "file": "images (1).jpg",
+        "ms": 375.2322999989701,
+        "n": 2,
+        "mean_conf": 0.952,
+        "reason": "too_few_segments",
+        "score": 88,
+        "tier": "Fresh",
+        "hist": {
+          "ripe": 1,
+          "partially_ripe": 1
+        },
+        "retake": true
+      },
+      {
+        "file": "images (10).jpg",
+        "ms": 609.6849999994447,
+        "n": 12,
+        "mean_conf": 0.83,
+        "reason": null,
+        "score": 75,
+        "tier": "Fresh",
+        "hist": {
+          "ripe": 11,
+          "overripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (100).jpg",
+        "ms": 362.8177999999025,
+        "n": 4,
+        "mean_conf": 0.522,
+        "reason": null,
+        "score": 50,
+        "tier": "Low Freshness",
+        "hist": {
+          "ripe": 3,
+          "partially_ripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (11).jpg",
+        "ms": 445.30479999957606,
+        "n": 8,
+        "mean_conf": 0.854,
+        "reason": null,
+        "score": 84,
+        "tier": "Fresh",
+        "hist": {
+          "ripe": 7,
+          "partially_ripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (12).jpg",
+        "ms": 742.334500000652,
+        "n": 19,
+        "mean_conf": 0.804,
+        "reason": null,
+        "score": 75,
+        "tier": "Fresh",
+        "hist": {
+          "ripe": 11,
+          "partially_ripe": 8
+        },
+        "retake": false
+      },
+      {
+        "file": "images (13).jpg",
+        "ms": 595.0812000010046,
+        "n": 11,
+        "mean_conf": 0.729,
+        "reason": null,
+        "score": 68,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "partially_ripe": 4,
+          "ripe": 7
+        },
+        "retake": false
+      },
+      {
+        "file": "images (14).jpg",
+        "ms": 515.7376999995904,
+        "n": 9,
+        "mean_conf": 0.733,
+        "reason": null,
+        "score": 71,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 7,
+          "partially_ripe": 2
+        },
+        "retake": false
+      },
+      {
+        "file": "images (15).jpg",
+        "ms": 568.649099999675,
+        "n": 13,
+        "mean_conf": 0.788,
+        "reason": null,
+        "score": 75,
+        "tier": "Fresh",
+        "hist": {
+          "ripe": 9,
+          "partially_ripe": 4
+        },
+        "retake": false
+      },
+      {
+        "file": "images (16).jpg",
+        "ms": 401.1097999991762,
+        "n": 6,
+        "mean_conf": 0.732,
+        "reason": null,
+        "score": 69,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 4,
+          "partially_ripe": 2
+        },
+        "retake": false
+      },
+      {
+        "file": "images (17).jpg",
+        "ms": 540.8652999994956,
+        "n": 12,
+        "mean_conf": 0.913,
+        "reason": null,
+        "score": 90,
+        "tier": "Premium Fresh",
+        "hist": {
+          "ripe": 11,
+          "partially_ripe": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "images (18).jpg",
+        "ms": 777.9533999982959,
+        "n": 18,
+        "mean_conf": 0.784,
+        "reason": null,
+        "score": 71,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "ripe": 8,
+          "partially_ripe": 10
+        },
+        "retake": false
+      },
+      {
+        "file": "images (19).jpg",
+        "ms": 542.6604000003863,
+        "n": 9,
+        "mean_conf": 0.929,
+        "reason": null,
+        "score": 81,
+        "tier": "Fresh",
+        "hist": {
+          "partially_ripe": 7,
+          "ripe": 2
+        },
+        "retake": false
+      }
+    ]
+  },
+  "apple": {
+    "n_images": 14,
+    "mean_ms_cpu": 1054.7653538459808,
+    "mean_pieces": 24.714285714285715,
+    "rows": [
+      {
+        "file": "apple ex.jpg",
+        "ms": 1694.7852000012062,
+        "n": 35,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 35
+        },
+        "retake": false
+      },
+      {
+        "file": "depositphotos_77884786-stock-photo-apple_jpg.rf.eb5dda402db27ef62c63aff83b5bc308.jpg",
+        "ms": 1037.367400000221,
+        "n": 23,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 23
+        },
+        "retake": false
+      },
+      {
+        "file": "fresh-red-apples-in-a-market-in-seoul-south-korea-2AC3E9H_jpg.rf.9f4e5c54419487c012017cf07deda7ff.jpg",
+        "ms": 1597.3145999996632,
+        "n": 43,
+        "mean_conf": 0.997,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 43
+        },
+        "retake": false
+      },
+      {
+        "file": "images-1-_jpg.rf.55e9cc876771de1f165260b1aa7b72b3.jpg",
+        "ms": 1312.4901999999565,
+        "n": 36,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 36
+        },
+        "retake": false
+      },
+      {
+        "file": "images-17-_jpg.rf.05c3521bc77154c12554524a064c6abc.jpg",
+        "ms": 1151.3940000004368,
+        "n": 20,
+        "mean_conf": 0.996,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 20
+        },
+        "retake": false
+      },
+      {
+        "file": "images-22-_jpg.rf.eb219ba0ae67e05cc9eb5b2acd015b96.jpg",
+        "ms": 791.8520999992325,
+        "n": 16,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 16
+        },
+        "retake": false
+      },
+      {
+        "file": "images-31-_jpg.rf.a0e567850ba0df77b684bd1f4230daf6.jpg",
+        "ms": 764.7699000008288,
+        "n": 15,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 15
+        },
+        "retake": false
+      },
+      {
+        "file": "images-43-_jpg.rf.f9b7148f1e69d7a546a5cb37a30c7ab8.jpg",
+        "ms": 798.1853000001138,
+        "n": 18,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 18
+        },
+        "retake": false
+      },
+      {
+        "file": "images-48-_jpg.rf.833a597c884fdb40519699dfdd5a976d.jpg",
+        "ms": 987.3045000003913,
+        "n": 22,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 22
+        },
+        "retake": false
+      },
+      {
+        "file": "images-55-_jpg.rf.9090849a1ce94271771d30677132e04d.jpg",
+        "ms": 588.9608999987104,
+        "n": 5,
+        "mean_conf": 0.909,
+        "reason": null,
+        "score": 72,
+        "tier": "Moderately Fresh",
+        "hist": {
+          "fresh": 4,
+          "rotten": 1
+        },
+        "retake": false
+      },
+      {
+        "file": "istockphoto-2031649931-612x612_jpg.rf.f87570eaeaf5eb6826ca06ab684b7dbb.jpg",
+        "ms": 770.0788999991346,
+        "n": 10,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 10
+        },
+        "retake": false
+      },
+      {
+        "file": "new-taipei-city-taiwan-november-260nw-2708405533_webp.rf.e756b8fcd3b012f96825b8ec1e612e46.jpg",
+        "ms": 1659.8458999997092,
+        "n": 47,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 47
+        },
+        "retake": false
+      },
+      {
+        "file": "product-jpeg-250x250_webp.rf.0369301355a2cc0aff89e034f333b281.jpg",
+        "ms": 1257.6730999990104,
+        "n": 35,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 35
+        },
+        "retake": false
+      },
+      {
+        "file": "rougemont-apple-orchard-rougemont-quebec-canada-B18HKG_jpg.rf.f6e6f534cda5e1464973674af6f1a5f5.jpg",
+        "ms": 994.7128000003431,
+        "n": 21,
+        "mean_conf": 1.0,
+        "reason": null,
+        "score": 100,
+        "tier": "Premium Fresh",
+        "hist": {
+          "fresh": 21
+        },
+        "retake": false
+      }
+    ]
+  }
+}

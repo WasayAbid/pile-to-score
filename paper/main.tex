@@ -16,7 +16,7 @@
 \setlist{nosep,leftmargin=*}
 \captionsetup{font=small,labelfont=bf}
 
-\title{\textbf{Pile-to-Score: Estimating Basket-Level Visual Freshness of Market-Stall Produce via Decoupled Instance Segmentation and Crop-Level Ripeness Classification}}
+\title{\textbf{Pile-to-Score: Estimating Basket-Level Visual Quality of Market-Stall Produce via Decoupled Instance Segmentation and Crop-Level Ripeness Classification}}
 \author{\textbf{Muhammad Abdul Wasay Abid}\\[2pt]
 \small Faculty of Information Technology, University of Central Punjab, Lahore, Pakistan\\
 \small \texttt{abdulwasayabid.801@gmail.com}\\
@@ -27,24 +27,25 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Image-based fruit ripeness and freshness classifiers are commonly trained and evaluated on photographs of a \emph{single} fruit against a clean background, whereas produce in informal street markets is photographed as \emph{piles} of dozens of overlapping fruits, for which a buyer or marketplace needs one consistent visual assessment of the whole lot. We present \textbf{Pile-to-Score}, a two-stage pipeline that turns a single market-stall photograph into a heuristic, basket-level \emph{visual freshness} score. Stage~1 uses a fruit-specific, single-class YOLOv8m instance-segmentation model, trained on stall photographs, to locate every visible fruit without judging its ripeness. Stage~2 classifies each crop with a fruit-specific ripeness classifier, and a confidence-adjusted aggregation rule with a spoilage penalty and explicit quality gating produces a 0--100 score and a tier. Because the stages are decoupled, existing single-fruit ripeness datasets can be reused without ripeness annotation on pile images. We instantiate the pipeline for banana, mango, tomato and apple, and integrate it as a prototype into a pre-release vendor marketplace application. Re-evaluated locally, the crop classifiers reach 98.6\% (banana, 6 classes) and 92.0\% (mango, 4 classes) top-1 accuracy on held-out test sets and 99.4\% (tomato, 4 classes) on a validation set, and the full pipeline processes a stall photograph with 9--25 fruits in 0.4--1.1\,s on a desktop CPU. A manually verified near-duplicate audit shows that the banana segmentation test split was contaminated: every test image also appears in training. Retraining on a leak-free split lowers its mask mAP50 from 97.3\% to 82.1\%. The audit also shows that naive image-similarity checks give false positives on letterboxed exports. The basket score is not yet validated against human graders, and on real stall photographs we observe a substantial domain gap; we report both as the main open problems.
+Image-based fruit ripeness and freshness classifiers are commonly trained and evaluated on photographs of a \emph{single} fruit against a clean background, whereas produce in informal street markets is photographed as \emph{piles} of dozens of overlapping fruits, for which a buyer or marketplace needs a single, consistent visual assessment of the whole lot. We present \textbf{Pile-to-Score}, a two-stage pipeline that turns a single market-stall photograph into a heuristic, basket-level \emph{visual quality} score. Stage~1 uses a fruit-specific, single-class YOLOv8m instance-segmentation model, trained on stall photographs, to locate each visible fruit without predicting ripeness. Stage~2 classifies each crop with a fruit-specific ripeness classifier, and a confidence-adjusted aggregation rule with a spoilage penalty and explicit quality gating produces a 0--100 score and a tier. Because the stages are decoupled, existing single-fruit ripeness datasets can be reused without ripeness annotation on pile images. We instantiate the pipeline for banana, mango, tomato and apple, and integrate it as a prototype into a pre-release vendor marketplace application. Re-evaluated locally, the crop classifiers reach 97.7\% (banana, 6 classes; test images without a near-duplicate in training) and 92.0\% (mango, 4 classes) top-1 accuracy on held-out test sets and 99.4\% (tomato, 4 classes) on a validation set. A manually verified near-duplicate audit shows that the banana segmentation test split was contaminated; a model retrained on a leak-free (and smaller) training set reaches 82.1\% mask mAP50 instead of the reported 97.3\%. A controlled ablation shows that mask supervision gives no measurable box-localisation benefit over a plain detector at this data scale. Threshold sweeps show that all retake decisions on 89 stall photographs are driven by the number of detected fruits, not by the confidence gate. The full pipeline processes a stall photograph in 0.4--1.1\,s on a desktop CPU. The score is not yet validated against human graders, and we report a substantial benchmark-to-stall domain gap as the main open problem.
 \end{abstract}
 
 \section{Introduction}
 Post-harvest loss of fruit and vegetables is among the largest sources of food loss worldwide~\cite{fao2019}. In many low- and middle-income countries much fresh produce is sold through informal channels---street carts, roadside stalls and wholesale \emph{mandis}---where quality is judged by eye and there is no standard grading. As these vendors begin to sell through mobile marketplaces, customers lose even that inspection and must rely on a photograph.
 
-Deep-learning fruit classifiers are well studied~\cite{kamilaris2018,koirala2019}. Most freshness and ripeness work, however, models one fruit per image~\cite{muresan2018,bird2022,vegnet}, while detection and segmentation work in agriculture targets fruit \emph{on the plant} for yield estimation and harvesting~\cite{sa2016,bargoti2017,liu2020yolotomato}. A vendor's photograph of a pile of bananas on a cart lies between these: it contains many fruits, heavy occlusion and clutter, and the useful output is one summary of the lot rather than a label per fruit.
+Deep-learning fruit classifiers are well studied~\cite{kamilaris2018,koirala2019}. Most freshness and ripeness work, however, models one fruit per image~\cite{muresan2018,bird2022,vegnet}, while detection and segmentation work in agriculture targets fruit \emph{on the plant} for yield estimation and harvesting~\cite{sa2016,bargoti2017,liu2020yolotomato}. A vendor's photograph of a pile of bananas on a cart lies between these: it contains many fruits, heavy occlusion and clutter, and the useful output is a single summary of the lot rather than a label per fruit.
 
-A single-stage detector whose classes are ripeness levels would require every fruit in every pile image to be annotated with both a location and a ripeness label. We instead \emph{decouple} the problem: a single-class segmenter answers ``where is each fruit?'', which only requires instance outlines on stall photographs, and a crop classifier answers ``how ripe is this fruit?'', for which public single-fruit datasets exist. We do not claim that this design is more accurate than a joint detector; we argue that it requires less annotation of pile images, and we evaluate it as a system.
+A single-stage detector whose classes are ripeness levels would require every fruit in every pile image to be annotated with both a location and a ripeness label. We instead \emph{decouple} the problem. In Stage~1, a single-class segmenter identifies the location of each visible fruit, which only requires instance outlines on stall photographs; in Stage~2, a crop classifier predicts the ripeness of each located fruit, for which public single-fruit datasets exist. We do not claim that this design is more accurate than a joint detector; we argue that it requires less annotation of pile images, and we evaluate it as a system.
 
-\textbf{Scope of ``freshness''.} Throughout, \emph{visual freshness} denotes a saleability-oriented summary of the visible ripeness and spoilage states of the fruits in a photograph. It is not a measure of physiological freshness, shelf life or edibility: an unripe mango can be perfectly fresh, and our score ranks it below a ripe one only because it is less ready for sale.
+\textbf{Scope of ``visual quality''.} Throughout, \emph{visual quality} denotes a saleability-oriented assessment of the visible ripeness and spoilage states of the fruits in a photograph. It is not a measure of physiological freshness, shelf life or edibility: an unripe mango can be perfectly fresh, and our score ranks it below a ripe one only because it is less ready for sale.
 
 \noindent\textbf{Contributions.}
 \begin{itemize}
-  \item A fully specified two-stage pipeline (Pile-to-Score) that converts a stall photograph into a heuristic basket-level visual freshness score, with an explicit class-to-weight mapping, spoilage penalty and quality gating (Sec.~\ref{sec:method}).
+  \item A fully specified two-stage pipeline (Pile-to-Score) that converts a stall photograph into a heuristic basket-level visual quality score, with an explicit class-to-weight mapping, spoilage penalty and quality gating (Sec.~\ref{sec:method}).
   \item Four fruit-specific instantiations, including author-built stall-segmentation datasets, released as open weights and code, and a prototype integration into a vendor-facing marketplace application (Sec.~\ref{sec:data}).
-  \item A local re-evaluation of every model together with a \textbf{manually verified leakage audit}. It identifies a contaminated banana segmentation test split, quantifies the effect by leak-free retraining, and documents a false-positive mode of similarity-based audits (Sec.~\ref{sec:results}).
-  \item A failure analysis of the \textbf{benchmark-to-stall domain gap} (Sec.~\ref{sec:discussion}).
+  \item A local re-evaluation of every model together with a \textbf{manually verified leakage audit}, which identifies a contaminated banana segmentation test split and documents a false-positive mode of similarity-based audits (Sec.~\ref{sec:results}).
+  \item A \textbf{detection-versus-segmentation ablation} for Stage~1 and a \textbf{threshold-sensitivity analysis} of the segmenter and the quality gate (Sec.~\ref{sec:results}).
+  \item A failure analysis of the \textbf{benchmark-to-stall domain gap} and of out-of-scope produce (Sec.~\ref{sec:discussion}).
 \end{itemize}
 
 \section{Related Work}
@@ -75,16 +76,16 @@ A single-stage detector whose classes are ripeness levels would require every fr
 \draw[arr] (img) -- (seg); \draw[arr] (seg) -- (crop); \draw[arr] (crop) -- (cls);
 \draw[arr] (cls) -- node[above=2pt,font=\footnotesize]{$(c_i,p_i)$} (agg); \draw[arr] (agg) -- (gate);
 \end{tikzpicture}}
-\caption{Pile-to-Score pipeline. The fruit type is supplied by the user (the vendor selects the product being listed) and selects which pair of models is used. Stage~1 locates every fruit without judging ripeness; Stage~2 classifies each crop; per-piece predictions $(c_i,p_i)$ are combined into a heuristic score $S\in[0,100]$, and low-quality inputs are rejected before a score is shown.}
+\caption{The Pile-to-Score pipeline. The user supplies the fruit type (the vendor selects the product being listed), which determines the pair of models used. Stage~1 locates each visible fruit without predicting ripeness, and Stage~2 classifies each crop. The per-piece predictions $(c_i,p_i)$ are combined into a heuristic score $S\in[0,100]$, and low-quality inputs are rejected before a score is shown.}
 \label{fig:pipeline}
 \end{figure*}
 
 \subsection{Stage 1: fruit-specific stall segmentation}
-We train \textbf{four independent, single-class} YOLOv8m-seg models~\cite{jocher2023yolov8}, one per fruit, initialised from COCO~\cite{lin2014coco} weights. Each model has a single class (``fruit'') and therefore localises fruit without predicting ripeness. There is no universal multi-fruit segmenter: the fruit type is supplied with the request, and mixed-fruit photographs are out of scope. Inference uses a low confidence threshold (0.10--0.20) to favour recall in dense piles, followed by suppression of crops overlapping an already accepted crop by IoU $>0.55$.
+We train \textbf{four independent, single-class} YOLOv8m-seg models~\cite{jocher2023yolov8}, one per fruit, initialised from COCO~\cite{lin2014coco} weights. Each model has a single class (``fruit'') and therefore localises fruit without predicting ripeness. There is no universal multi-fruit segmenter: the fruit type is supplied with the request, and mixed-fruit photographs are out of scope. Inference uses a low confidence threshold (banana and mango 0.20, apple 0.15, tomato 0.10) to favour recall in dense piles, followed by non-maximum suppression (IoU 0.45) and removal of crops that overlap an already accepted crop with IoU $>0.55$.
 
-\textbf{Masks versus boxes.} The models are trained with polygon (mask) supervision, but the current pipeline crops each instance using its \emph{bounding box}, expanded by 6\% on every side; the predicted masks are not yet used to remove background or to separate touching fruit. We chose a segmentation architecture because instance outlines were collected and we intended to use them for background removal. Whether mask supervision improves localisation over a plain detector trained on the same data has not been tested; Sec.~\ref{sec:discussion} discusses this.
+\textbf{Masks versus boxes.} The models are trained with polygon (mask) supervision, but the current pipeline crops each instance using its \emph{bounding box}, expanded by 6\% on every side; the predicted masks are not yet used to remove background or to separate touching fruit. We chose a segmentation architecture because instance outlines were collected and we intended to use them for background removal. Sec.~\ref{sec:dvs} tests whether mask supervision helps localisation compared with a plain detector.
 
-We use the medium (``m'') YOLOv8 variant as a compromise between the accuracy of larger variants and the CPU latency required for an interactive listing flow (Table~\ref{tab:e2e}); we did not ablate model size.
+We use the medium (``m'') YOLOv8 variant as an accuracy--computational cost trade-off for interactive use on a CPU (Table~\ref{tab:e2e}); we did not ablate model size.
 
 \subsection{Stage 2: crop-level ripeness classification}
 Each crop is resized to $224\times224$ and classified by a fruit-specific YOLOv8m-cls model (ImageNet-pretrained). Taxonomies follow the source datasets (Table~\ref{tab:weights}). For mango, an HSV heuristic for large dark lesions can additionally raise a warning, because the mango taxonomy has no \emph{rotten} class; in basket mode it does not change the score.
@@ -98,7 +99,25 @@ This is \emph{not} a normalised confidence-weighted mean (which would divide by 
 \begin{equation}
   S = \operatorname{clip}\big(B - \pi(\rho),\,0,\,100\big),
 \end{equation}
-with $\pi(\rho)\in\{0,5,10,20\}$ for $\rho\le 0.05, \le0.15, \le0.25, >0.25$ (banana: $\{0,4,8,12\}$ at $0.10, 0.22, 0.35$, since its weights already discount overripe fruit). $S$ is mapped to tiers \emph{Premium Fresh} ($\ge 90$), \emph{Fresh} ($\ge 75$), \emph{Moderately Fresh} ($\ge 60$), \emph{Low Freshness} ($\ge 40$) and \emph{Poor Quality}.
+where, for mango, tomato and apple,
+\begin{equation}
+\pi(\rho)=\begin{cases}
+0, & \rho\le 0.05,\\
+5, & 0.05<\rho\le 0.15,\\
+10, & 0.15<\rho\le 0.25,\\
+20, & \rho>0.25,
+\end{cases}
+\end{equation}
+and, for banana, whose weights already discount overripe fruit,
+\begin{equation}
+\pi_{\text{banana}}(\rho)=\begin{cases}
+0, & \rho\le 0.10,\\
+4, & 0.10<\rho\le 0.22,\\
+8, & 0.22<\rho\le 0.35,\\
+12, & \rho>0.35.
+\end{cases}
+\end{equation}
+$S$ is mapped to the application's tiers \emph{Premium Fresh} ($S\ge 90$), \emph{Fresh} ($75\le S<90$), \emph{Moderately Fresh} ($60\le S<75$), \emph{Low Freshness} ($40\le S<60$) and \emph{Poor Quality} ($S<40$).
 
 \begin{table}[t]
 \centering\small
@@ -120,44 +139,49 @@ Apple  & fresh (1.00), rotten$^\dagger$ (0.15) \\
 \end{table}
 
 \subsection{Quality gating and multi-photo pooling}
-A score from a bad photograph is worse than no score. The result is \emph{blocked} with a retake request if (i) no fruit is segmented, (ii) fewer than three fruits are segmented, or (iii) the mean classifier confidence is below 0.38; very low scores raise a \emph{warning}. These thresholds were set by hand and their effectiveness has not been validated. A vendor may submit several photographs of a lot; the prototype pools them with a piece-count-weighted mean, $S = \sum_k N_k S_k / \sum_k N_k$. This \textbf{assumes the photographs show disjoint parts of the lot}: fruits visible in several photographs are counted several times, and we do not perform cross-image re-identification.
+A score from a bad photograph is worse than no score. The result is \emph{blocked} with a retake request if (i) no fruit is segmented, (ii) fewer than three fruits are segmented, or (iii) the mean classifier confidence is below 0.38; a score of 25 or below raises a \emph{warning} but is still shown. These thresholds were set by hand; Sec.~\ref{sec:sens} analyses their sensitivity. A vendor may submit several photographs of a lot; the prototype pools them with a piece-count-weighted mean, $S = \sum_k N_k S_k / \sum_k N_k$. This \textbf{assumes the photographs show disjoint parts of the lot}: fruits visible in several photographs are counted several times, and we do not perform cross-image re-identification.
 
 \subsection{Prototype integration}
 The models are served by a FastAPI service (\texttt{/v1/freshness}, \texttt{/v1/freshness/url}). In a pre-release React Native vendor application, a vendor photographs produce when listing it; a serverless function forwards the image and stores the score, tier, class histogram and piece count with the listing. The application also lets vendors rate each score from 1 to 5, a channel intended for future human-aligned evaluation; no ratings have been collected yet.
 
 \section{Datasets}\label{sec:data}
-Table~\ref{tab:data} lists all data. \textbf{Stage~1} datasets were built by the author from market and stall photographs collected from the web, plus approximately 30 photographs taken by the author, annotated with instance polygons on Roboflow and exported with Roboflow augmentation. In total they comprise about 430 unique source photographs (banana 112, mango 110, tomato 118, apple 93; the banana validation and test images duplicate training images, see Sec.~\ref{sec:results}) and about 47{,}000 annotated instances after augmentation. \textbf{Stage~2} classifiers use public single-fruit datasets totalling 16{,}844 images (banana 5{,}616; mango 1{,}996; tomato 7{,}226; apple 2{,}006), which include each provider's own augmentations; we did not add augmented copies to these counts.
+Table~\ref{tab:data} lists all data. \textbf{Stage~1} datasets were built by the author from market and stall photographs collected from the web, plus approximately 30 photographs taken by the author, annotated with instance polygons on Roboflow and exported with Roboflow augmentation. Augmentation (three variants per source photograph) was applied to the mango, tomato and apple \emph{training} splits only; validation and test images are unaugmented. Counting each source photograph once, the four datasets contain \textbf{445 unique source photographs}: banana 112, mango 110 ($88+11+11$), tomato 118 ($69+31+18$) and apple 105 ($68+21+16$). For banana, the 33 validation and test images duplicate training images (Sec.~\ref{sec:results}), so its 145 files contain only 112 unique photographs. The three locally archived exports contain 8{,}709 (banana), 6{,}914 (mango) and 17{,}096 (apple) annotated instances across all splits, including augmented copies; the tomato training export was not archived (Sec.~\ref{sec:results}).
+
+\textbf{Stage~2} classifiers use public single-fruit datasets totalling 16{,}844 images (banana 5{,}616; mango 1{,}996; tomato 7{,}226; apple 2{,}006). These counts include each provider's own augmented copies, so the number of independent fruit photographs is smaller; we quantify this with the near-duplicate audit in Sec.~\ref{sec:results}.
 
 \begin{table}[t]
 \centering\small
-\caption{Datasets (train/val/test images). Stage~1 counts are after Roboflow augmentation; ``src'' is the number of unique source photographs in the training split.}
+\caption{Datasets (train/val/test images as exported). Stage-1 training splits include augmented copies; ``src'' is the number of unique source photographs per dataset.}
 \label{tab:data}
 \setlength{\tabcolsep}{3pt}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{@{}llll@{}}
+\begin{tabular}{@{}lllll@{}}
 \toprule
-Fruit & Stage & Source & Images \\
+Fruit & Stage & Source & Images & src \\
 \midrule
-Banana & 1 seg & own (stall) & 112/22/11 \\
-       & 2 cls & Roboflow c3a2v~\cite{rf_banana} & 3931/1123/562 \\
-Mango  & 1 seg & own (stall) & 264/11/11 (88 src) \\
-       & 2 cls & Roboflow cadimedia~\cite{rf_mango} & 1597/200/199 \\
-Tomato & 1 seg & own (stall) & 210/31/18 (69 src) \\
-       & 2 cls & VegNet~\cite{vegnet} & 6501/725/-- \\
-Apple  & 1 seg & own (stall) & 176/21/13 (59 src)$^\ast$ \\
-       & 2 cls & public fresh/rotten~\cite{rf_apple} & 1406/401/199 \\
+Banana & 1 seg & own (stall) & 112/22/11 & 112$^a$ \\
+       & 2 cls & Roboflow c3a2v~\cite{rf_banana} & 3931/1123/562 & -- \\
+Mango  & 1 seg & own (stall) & 264/11/11 & 110 \\
+       & 2 cls & Roboflow cadimedia~\cite{rf_mango} & 1597/200/199 & -- \\
+Tomato & 1 seg & own (stall) & 210/31/18 & 118 \\
+       & 2 cls & VegNet~\cite{vegnet} & 6501/725$^b$/-- & -- \\
+Apple  & 1 seg & own (stall) & 204/21/16$^c$ & 105 \\
+       & 2 cls & public fresh/rotten~\cite{rf_apple} & 1406/401/199 & -- \\
 \bottomrule
 \end{tabular}}
 \par\vspace{3pt}
-{\footnotesize\raggedright $^\ast$ Locally archived export; the training run logged 204/21/16.\par}
+{\footnotesize\raggedright
+$^a$ Validation and test images duplicate training images.
+$^b$ One validation file is in \texttt{.jfif} format and is not read by our evaluation loader, so evaluation uses $n=724$.
+$^c$ The local archive of this export lacks 28 training and 3 test image files (annotations present). Re-evaluation therefore uses 13 of the 16 test images, and the leakage audit covers 176 of the 204 training images.\par}
 \end{table}
 
 For mango, the original \emph{Early Ripe} and \emph{Partially Ripe} classes were merged and the pooled data re-split with stratified 80/10/10 sampling. The VegNet tomato subset uses classes Unripe, Ripe, Old and Damaged and provides only train and validation splits, so \textbf{tomato results are validation results}; that split was also used for checkpoint selection, so they are optimistic.
 
 \section{Experimental Setup}
-\textbf{Training.} All models were trained in Google Colab with Ultralytics~8.4~\cite{jocher2023yolov8}. Segmentation models and the mango classifier used a two-phase schedule: (1) a frozen backbone for 25 epochs (\texttt{freeze}=10 for segmentation, 8 for classification), then (2) full fine-tuning (AdamW~\cite{loshchilov2019adamw}, $\text{lr}_0 = 2\!\times\!10^{-4}$--$3\!\times\!10^{-4}$) with early stopping. Segmentation used $640\times640$ inputs with mosaic disabled. The mango classifier was regularised with dropout 0.25, mixup 0.10~\cite{zhang2018mixup}, label smoothing 0.10~\cite{szegedy2016} and weight decay $10^{-3}$.
+\textbf{Training.} All released models were trained in Google Colab with Ultralytics~8.4~\cite{jocher2023yolov8}. Segmentation models and the mango classifier used a two-phase schedule: (1) a frozen backbone for 25 epochs (\texttt{freeze}=10 for segmentation, 8 for classification), then (2) full fine-tuning (AdamW~\cite{loshchilov2019adamw}, $\text{lr}_0 = 2\!\times\!10^{-4}$--$3\!\times\!10^{-4}$) with early stopping. Segmentation used $640\times640$ inputs with mosaic disabled. The mango classifier was regularised with dropout 0.25, mixup 0.10~\cite{zhang2018mixup}, label smoothing 0.10~\cite{szegedy2016} and weight decay $10^{-3}$. Models trained for this paper (leak-free retraining and the ablation in Sec.~\ref{sec:dvs}) used a shorter local schedule on a GTX~1660~Ti: 15 frozen epochs ($\text{lr}_0=10^{-3}$) and up to 60 fine-tuning epochs ($\text{lr}_0=2\times10^{-4}$, patience 15), batch 4, seed 0.
 
-\textbf{Evaluation.} All reported numbers were \emph{re-computed locally} from the released weights on an AMD Ryzen~5 7500F CPU (16\,GB RAM). We report top-1, top-2 and macro F1 for classifiers, and mask/box mAP@0.5 and mAP@0.5:0.95 for segmentation.
+\textbf{Evaluation.} All reported numbers were \emph{re-computed locally} from the released weights on an AMD Ryzen~5 7500F CPU (16\,GB RAM), with Ultralytics~8.4.51. We report top-1, top-2 and macro F1 for classifiers, and mask/box mAP@0.5 and mAP@0.5:0.95 for segmentation.
 
 \textbf{Leakage audit.} For each held-out image we compute the maximum normalised cross-correlation (NCC) between a grayscale thumbnail of it (and of its horizontal flip) and every training thumbnail ($32\times32$ for segmentation sets, $24\times24$ for the larger classification sets). Before resizing, uniform near-black borders are trimmed (see below). We set the near-duplicate threshold to NCC $\ge 0.95$, well above a \emph{cross-fruit control}: NCC between held-out images of one fruit's segmentation set and training images of a different fruit's set never exceeds 0.62. \textbf{Every flagged segmentation pair was inspected manually}, as was a random sample of flagged classification pairs.
 
@@ -166,11 +190,11 @@ For mango, the original \emph{Early Ripe} and \emph{Partially Ripe} classes were
 \section{Results}\label{sec:results}
 
 \subsection{Crop-level ripeness classification}
-Table~\ref{tab:cls} and Fig.~\ref{fig:cm} summarise classifier performance. Banana (test) and tomato (validation) are near-saturated. Mango is the hardest (92.0\% test): errors fall between \emph{partially ripe} and its neighbours, as expected for an ordinal, visually continuous property, and top-2 accuracy is 99.5\%. CPU latency is about 32\,ms per crop. The apple classifier logged 100\% validation accuracy during training; its dataset is not available for independent re-evaluation, and a perfect score on a public fresh/rotten set is itself a warning sign, so we do not report it as a result.
+Table~\ref{tab:cls} and Fig.~\ref{fig:cm} summarise classifier performance. Banana (test) and tomato (validation) are near-saturated. Mango is the hardest (92.0\% test): errors fall between \emph{partially ripe} and its neighbours, as expected for an ordinal, visually continuous property, and top-2 accuracy is 99.5\%. CPU latency is about 32\,ms per crop. The apple classifier logged 100\% validation accuracy during training, but the provenance of its dataset could not be re-established (see~\cite{rf_apple}) and a perfect score on a public fresh/rotten set is itself a warning sign, so we do not report it as a result.
 
 \begin{table}[t]
 \centering\small
-\caption{Crop classifiers, re-computed locally. Tomato is a \emph{validation} result (no test split exists).}
+\caption{Crop classifiers on all held-out images, re-computed locally. Tomato is a \emph{validation} result (no test split exists). See Table~\ref{tab:leak_cls} for de-duplicated results.}
 \label{tab:cls}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{@{}lcccccc@{}}
@@ -193,7 +217,7 @@ Tomato (4) & \textit{val} & 724 & 99.4 & 100.0 & 99.4 & 33.2 \\
 \label{fig:cm}
 \end{figure*}
 
-\textbf{Robustness to near-duplicates.} 54\% of banana test images and 26\% of tomato validation images have a near-duplicate (NCC $\ge 0.95$) in training; manual inspection confirmed these are rotated, flipped or colour-shifted copies of the same photograph. The re-split mango test set has none. Restricting evaluation to images \emph{without} a near-duplicate changes accuracy by at most 1 percentage point (Table~\ref{tab:leak_cls}), so classifier accuracy is not explained by memorisation of duplicates.
+\textbf{Robustness to near-duplicates.} 54\% of banana test images (306 of 562) and 26\% of tomato validation images (191 of 724) have a near-duplicate (NCC $\ge 0.95$) in training; manual inspection confirmed these are rotated, flipped or colour-shifted copies of the same photograph. The re-split mango test set has none. On images \emph{without} a near-duplicate, banana accuracy is 97.7\% ($n=256$), which we regard as the primary banana result, and tomato accuracy is unchanged at 99.4\% ($n=533$) (Table~\ref{tab:leak_cls}). Accuracy changes by at most 1 percentage point, so classifier accuracy is not explained by memorisation of duplicates.
 
 \begin{table}[t]
 \centering\small
@@ -205,9 +229,9 @@ Tomato (4) & \textit{val} & 724 & 99.4 & 100.0 & 99.4 & 33.2 \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 Fruit & $n$ & Top-1 & $n$ & Top-1 \\
 \midrule
-Banana (test) & 562 & 98.6 & 256 & 97.7 \\
-Mango (test)  & 199 & 92.0 & 199 & 92.0 \\
-Tomato (val)  & 724 & 99.4 & 533 & 99.4 \\
+Banana (test) & 562 & 98.6 & 256 & \textbf{97.7} \\
+Mango (test)  & 199 & 92.0 & 199 & \textbf{92.0} \\
+Tomato (val)  & 724 & 99.4 & 533 & \textbf{99.4} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -215,7 +239,9 @@ Tomato (val)  & 724 & 99.4 & 533 & 99.4 \\
 \subsection{Stall segmentation and leakage}
 Table~\ref{tab:seg} compares the metrics logged during training, our local re-evaluation, and the audit. Re-evaluation reproduces logged values to within about 1 point. For \textbf{banana}, each of the 11 test images and each of the 22 validation images has a pixel-identical counterpart (NCC $=1.00$, verified visually) in the training split: the dataset export placed held-out images in training as well. The banana test score therefore measures memorisation. For \textbf{mango} and \textbf{apple}, no test image has a near-duplicate after border trimming (maximum NCC 0.61 and 0.49 respectively), so their re-evaluated scores stand.
 
-To obtain an honest banana estimate we removed from training every image with NCC $\ge 0.85$ to any validation or test image---36 images, including the identical counterparts of all 33 held-out images, leaving 76 of 112---retrained with the same two-phase recipe (15 frozen + up to 60 fine-tuning epochs, GTX~1660~Ti), and evaluated on the untouched test split. Mask mAP50 falls from 97.3\% to \textbf{82.1\%} and mAP50:95 from 71.9\% to \textbf{46.6\%}. Part of this drop reflects the smaller training set, so 82.1\% is a conservative estimate. Even so, banana---apparently the strongest segmenter---is the weakest once leakage is removed, and mask quality on tightly packed banana hands is the system's main localisation weakness. Segmentation inference takes $\approx$300\,ms per image on CPU and $\approx$28\,ms on the GPU.
+To obtain an honest banana estimate we removed from training every image with NCC $\ge 0.85$ to any validation or test image---36 images, including the identical counterparts of all 33 held-out images, leaving 76 of 112---retrained with the local schedule, and evaluated on the untouched test split. Mask mAP50 falls from 97.3\% to \textbf{82.1\%} and mAP50:95 from 71.9\% to \textbf{46.6\%}. This difference is \emph{not} an isolated causal effect of leakage: the retrained model also used a training set about one third smaller (76 instead of 112 images) and a shorter schedule, so the drop combines the removal of leaked images with these changes. 82.1\% is therefore best read as a conservative held-out estimate for banana. Even so, banana---apparently the strongest segmenter---is the weakest once leakage is removed, and tightly packed banana hands are the system's main localisation weakness.
+
+\textbf{Small test samples.} Each segmentation test set contains only 11--18 independent photographs, although these contain hundreds of instances. Instance-level mAP from so few photographs has high variance and is dominated by a few crowded scenes, so differences of a few points between models should not be over-interpreted.
 
 \begin{table*}[t]
 \centering\small
@@ -228,9 +254,9 @@ To obtain an honest banana estimate we removed from training every image with NC
 \cmidrule(lr){4-5}\cmidrule(lr){7-8}
 Fruit & instances & mAP50 & mAP50 & mAP50:95 & Dup. & mAP50 / mAP50:95 & Basis \\
 \midrule
-Banana & 11 / 622  & 96.3 & 97.3 & 71.9 & 11/11 & \textbf{82.1 / 46.6} & leak-free retrain \\
-Mango  & 11 / 244  & 93.2 & 94.2 & 75.2 & 0/11  & \textbf{94.2 / 75.2} & clean test split \\
-Apple  & 13 / 821  & 80.3 & 80.4 & 59.7 & 0/13  & \textbf{80.4 / 59.7} & clean test split \\
+Banana & 11 / 632  & 96.3 & 97.3 & 71.9 & 11/11 & \textbf{82.1 / 46.6} & leak-free retrain (76 training images) \\
+Mango  & 11 / 254  & 93.2 & 94.2 & 75.2 & 0/11  & \textbf{94.2 / 75.2} & clean test split \\
+Apple  & 13 / 833  & 80.3 & 80.4 & 59.7 & 0/13  & \textbf{80.4 / 59.7} & clean test split (13 of 16 images available) \\
 Tomato & 18 / 1286 & 87.5 & n/a$^\dagger$ & n/a$^\dagger$ & n/a & -- & not reproducible locally \\
 \bottomrule
 \end{tabular}}
@@ -238,22 +264,70 @@ Tomato & 18 / 1286 & 87.5 & n/a$^\dagger$ & n/a$^\dagger$ & n/a & -- & not repro
 {\footnotesize\raggedright $^\dagger$ The exact tomato export used for training was not archived locally, so it could neither be re-evaluated nor audited; the logged value is reported for completeness only.\par}
 \end{table*}
 
-\subsection{End-to-end behaviour on stall photographs}
-We ran the full pipeline on 25 vendor-style stall photographs per fruit (14 for apple) collected from the web. These photographs have \textbf{no ripeness ground truth}, and some are also Stage-1 training sources, so this experiment measures \emph{throughput and gating behaviour only, not accuracy}. Table~\ref{tab:e2e} reports the results and Fig.~\ref{fig:qual} shows examples. A photograph is processed in 0.4--1.1\,s on CPU, which is acceptable for an interactive listing flow without a GPU.
+\subsection{Detection versus segmentation for Stage 1}\label{sec:dvs}
+Because the pipeline crops bounding boxes, we tested whether mask supervision is needed at all. For banana (leak-free split), mango and apple we trained a YOLOv8m \emph{detector} and a YOLOv8m-seg model with an identical recipe (the local schedule, same data, same seed) and compared them on the test split using box metrics (Table~\ref{tab:dvs}). Box mAP50 differs by at most 1.5 points and in both directions (segmentation better on banana and mango, detection better on apple), which is within the variance expected from 11--13 test photographs. The detector has 5\% fewer parameters (25.8\,M vs.\ 27.2\,M) and was faster on CPU for banana and mango. \textbf{At this data scale, mask supervision gives no measurable localisation benefit}; since the current pipeline uses only boxes, a plain detector would be an equally valid and slightly cheaper Stage~1. Masks only pay off if they are used, e.g.\ to remove background or touching neighbours from crops, which we leave to future work.
 
 \begin{table}[t]
 \centering\small
-\caption{End-to-end runs on unlabelled stall photographs (CPU). Not an accuracy measurement.}
-\label{tab:e2e}
+\caption{Stage-1 ablation: YOLOv8m detection (det) vs.\ segmentation (seg) trained with an identical local recipe; test split, box metrics (\%). CPU: mean single-image latency incl.\ pre/post-processing. Mango/apple seg models here are local retrains, so they differ slightly from Table~\ref{tab:seg}.}
+\label{tab:dvs}
+\setlength{\tabcolsep}{3.5pt}
 \resizebox{\columnwidth}{!}{%
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}llccccc@{}}
 \toprule
-Fruit & Photos & Fruits / photo & ms / photo & Retakes \\
+Fruit & Model & Box mAP50 & mAP50:95 & Recall & Mask mAP50 & CPU ms \\
 \midrule
-Banana & 25 & 21.0 & 811  & 8 \\
-Mango  & 25 & 20.0 & 810  & 1 \\
-Tomato & 25 & 8.9  & 429  & 16 \\
-Apple  & 14 & 24.7 & 1064 & 0 \\
+Banana & det & 82.3 & 55.6 & 73.2 & -- & 175 \\
+       & seg & 83.8 & 55.7 & 75.9 & 82.1 & 269 \\
+Mango  & det & 93.8 & 79.6 & 88.0 & -- & 206 \\
+       & seg & 93.9 & 77.9 & 86.6 & 93.7 & 288 \\
+Apple  & det & 80.4 & 65.2 & 82.0 & -- & 379 \\
+       & seg & 79.6 & 64.6 & 84.3 & 78.5 & 336 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\subsection{Threshold sensitivity}\label{sec:sens}
+\textbf{Segmenter confidence.} Using the production post-processing (NMS and crop de-duplication), we matched predicted boxes to labelled test instances at IoU $\ge 0.5$ and swept the confidence threshold (Table~\ref{tab:sweep}). Lowering the threshold trades false detections for missed fruit in the expected way. The production thresholds (banana and mango 0.20, apple 0.15) miss 24\%, 11\% and 8\% of labelled fruit respectively. The low apple precision may partly reflect apples that are visible in crates but were not annotated; we have not verified this.
+
+\begin{table}[t]
+\centering\small
+\caption{Segmenter confidence sweep on the test split: recall / precision of instances at IoU $\ge 0.5$. Bold: production threshold. Banana uses the leak-free model.}
+\label{tab:sweep}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+Conf. & Banana ($n$=632) & Mango ($n$=254) & Apple ($n$=833) \\
+\midrule
+0.10 & .824 / .712 & .902 / .905 & .933 / .588 \\
+0.15 & .804 / .771 & .890 / .904 & \textbf{.917 / .603} \\
+0.20 & \textbf{.764 / .808} & \textbf{.886 / .926} & .908 / .621 \\
+0.30 & .698 / .850 & .870 / .948 & .893 / .648 \\
+0.40 & .631 / .885 & .858 / .960 & .872 / .664 \\
+0.50 & .535 / .909 & .835 / .959 & .854 / .680 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Quality gate.} On the 89 end-to-end stall photographs (next subsection), the lowest mean classifier confidence of any photograph in which at least one fruit was found was 0.52 (mango; banana 0.84, tomato 0.74, apple 0.91). Consequently the confidence rule (iii) never fired, and the set of accepted photographs is \emph{identical} for confidence thresholds 0.30, 0.38, 0.45 and 0.50. Every retake request was caused by the segment-count rules (i) and (ii). The confidence gate, as currently set, therefore provides no protection on this data, and the gate's behaviour is determined almost entirely by Stage~1.
+
+\subsection{End-to-end behaviour on stall photographs}
+We ran the full pipeline on 25 vendor-style stall photographs per fruit (14 for apple) collected from the web. These photographs have \textbf{no ripeness ground truth}, and some are also images of the Stage-1 datasets (13 of the 14 apple photographs come from the apple segmentation export), so this experiment measures \emph{throughput and gating behaviour only, not accuracy}. Table~\ref{tab:e2e} reports the results and Fig.~\ref{fig:qual} shows examples. A photograph is processed in 0.4--1.1\,s on average on CPU, which is acceptable for an interactive listing flow without a GPU.
+
+\begin{table}[t]
+\centering\small
+\caption{End-to-end runs on unlabelled stall photographs (CPU). Retakes are split by cause: no fruit found / fewer than three found. ``Warn'': low-score warnings (score still shown). Not an accuracy measurement.}
+\label{tab:e2e}
+\setlength{\tabcolsep}{4pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Fruit & Photos & Fruits / photo & ms / photo & Retakes (0 / $<$3) & Warn \\
+\midrule
+Banana & 25 & 21.0 & 860  & 8 (5 / 3)  & 1 \\
+Mango  & 25 & 20.0 & 763  & 1 (0 / 1)  & 1 \\
+Tomato & 25 & 8.9  & 435  & 16 (13 / 3) & 5 \\
+Apple  & 14 & 24.7 & 1055 & 0 (0 / 0)  & 0 \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -266,24 +340,26 @@ Apple  & 14 & 24.7 & 1064 & 0 \\
 \resizebox{\textwidth}{!}{%
 \includegraphics[height=5cm]{figures/apple_2.jpg}\hspace{6pt}%
 \includegraphics[height=5cm]{figures/tomato_2.jpg}}
-\caption{Pipeline output on stall photographs (top: banana, mango; bottom: apple, tomato). Each box is one Stage-1 instance coloured by its Stage-2 class: green = ripe/fresh, orange = unripe/partially ripe, red = overripe/rotten/damaged. Bottom right shows two failure modes: potatoes (left) are segmented as tomatoes (a false positive of the single-class segmenter), and many visually ripe tomatoes are classified as \emph{damaged} (domain gap of the classifier).}
+\caption{Pipeline output on stall photographs (top: banana, mango; bottom: apple, tomato). Each box is one Stage-1 instance coloured by its Stage-2 class: green = ripe/fresh, orange = unripe/partially ripe, red = overripe/rotten/damaged. The bottom-right image shows two failure modes: potatoes (left) are segmented as tomatoes, an out-of-scope false positive of the single-class segmenter (Sec.~\ref{sec:discussion}), and many visually ripe tomatoes are classified as \emph{damaged}, a domain gap of the classifier.}
 \label{fig:qual}
 \end{figure*}
 
 \section{Discussion}\label{sec:discussion}
-\textbf{What decoupling buys.} Separating ``where'' from ``how ripe'' produced pile-level systems for four fruits with a few hundred segmentation images each and no ripeness labels on pile images, and either stage can be upgraded independently. We have \emph{not} compared against a single-stage, ripeness-aware detector trained on jointly labelled pile images; such data do not exist for our setting, and creating them is the annotation cost the design avoids. Whether decoupling is also more \emph{accurate} is therefore an open question. Similarly, a box-only detector trained on the same data is a natural, cheaper baseline for Stage~1, which we leave to future work.
+\textbf{What decoupling buys.} Separating localisation from ripeness prediction produced pile-level systems for four fruits from a few hundred annotated source images and no ripeness labels on pile images, and either stage can be upgraded independently. We have \emph{not} compared against a single-stage, ripeness-aware detector trained on jointly labelled pile images; such data do not exist for our setting, and creating them is the annotation cost the design avoids. Whether decoupling is also more \emph{accurate} is therefore an open question. The ablation in Sec.~\ref{sec:dvs} shows that, within Stage~1, a box-only detector is a valid substitute for the segmenter.
 
-\textbf{Benchmark accuracy is not stall accuracy.} The tomato classifier scores 99.4\% on VegNet validation, whose images show single tomatoes on a white background~\cite{vegnet}, yet on stall crops it labels many visibly ripe tomatoes \emph{damaged}, and 16 of 25 tomato photographs were rejected by the quality gate. Stall crops are small, occluded, blurred and lit by sunlight or coloured shade cloth. Conversely, the apple pipeline gives near-perfect scores to almost every photograph, which suggests a binary fresh/rotten taxonomy is too coarse for retail use. The quality gate rejects many of the problematic tomato inputs, but its effectiveness is unvalidated. Closing the gap requires ripeness labels on stall crops, which Stage~1 now makes easy to produce.
+\textbf{Benchmark accuracy is not stall accuracy.} Tomato shows the domain gap at \emph{both} stages. In Stage~1, the tomato segmenter found \textbf{no tomato at all in 13 of 25} stall photographs and fewer than three in another 3, even at its low 0.10 threshold; these 16 retakes are therefore Stage-1 failures, not classifier failures. In Stage~2, the classifier scores 99.4\% on VegNet validation, whose images show single tomatoes on a white background~\cite{vegnet}, yet on stall crops it labels many visibly ripe tomatoes \emph{damaged}: of the 9 accepted tomato photographs, 5 received a low-score warning, and in one photograph 50 of 85 crops were labelled \emph{damaged}. Stall crops are small, occluded, blurred and lit by sunlight or coloured shade cloth. Conversely, the apple pipeline gives near-perfect scores to almost every photograph, which suggests that a binary fresh/rotten taxonomy is too coarse for retail use. Closing the gap requires stall-domain data for both stages: more varied segmentation photographs and ripeness labels on stall crops, which Stage~1 makes easy to extract.
+
+\textbf{Out-of-scope produce.} The segmenters are single-class and have no notion of fruit identity: they detect objects that \emph{look like} the training fruit. In Fig.~\ref{fig:qual} (bottom right), potatoes in a mixed display are segmented as tomatoes and then scored by the tomato classifier. The pipeline trusts the vendor's fruit-type selection and assumes a single-fruit basket; it performs no identity verification, so mixed or mislabelled displays produce scores that include non-target produce. An open-set check, for example a crop-level fruit-identity classifier or a CLIP-style~\cite{radford2021clip} filter, is needed before deployment.
 
 \textbf{Leakage is easy to miss---and easy to over-detect.} One of four segmentation datasets had a contaminated test split even though training logs looked normal, and a naive audit wrongly flagged another. Both lessons argue for audits that combine an automatic similarity screen, a control distribution for choosing thresholds, and manual verification.
 
-\textbf{Limitations.} (i) The basket score, its weights, penalty and gating thresholds are hand-designed and \textbf{not validated against human graders}; it is a heuristic visual proxy, not a calibrated freshness measure. (ii) Segmentation test sets contain few independent photographs (11--18, although hundreds of instances), drawn largely from the web rather than from a controlled range of markets, vendors and cameras. (iii) Tomato classifier results are validation results. (iv) No ground-truth evaluation exists on real stall photographs. (v) Multi-photo pooling double-counts fruits that appear in more than one photograph. (vi) Classifier confidences are uncalibrated.
+\textbf{Limitations.} (i) The basket score, its weights, penalty and gating thresholds are hand-designed and \textbf{not validated against human graders}; it is a heuristic visual proxy, not a calibrated quality measure. (ii) Segmentation test sets contain \textbf{few independent photographs} (11--18), drawn largely from the web rather than from a controlled range of markets, vendors and cameras; all segmentation numbers carry high variance. (iii) Tomato classifier results are validation results, and the tomato segmenter could not be re-evaluated. (iv) No ground-truth evaluation exists on real stall photographs. (v) Multi-photo pooling double-counts fruits that appear in more than one photograph. (vi) Classifier confidences are uncalibrated, and the confidence gate never fired in our tests. (vii) There is no check of fruit identity (out-of-scope produce is scored). (viii) The apple classifier's training data could not be traced, so it is not evaluated.
 
 \section{Conclusion}
-Pile-to-Score is a decoupled segmentation--classification pipeline that turns one photograph of a market-stall pile into a heuristic basket-level visual freshness score, instantiated for four fruits, released openly and integrated as a prototype into a vendor marketplace application. Crop classifiers reach 92--99\% held-out accuracy, robust to near-duplicate removal; segmenters reach 80--94\% mask mAP50 on clean test splits, and 82\% for banana after a manually verified leakage audit corrected an inflated 97\%. The most important next steps are (1) collecting human basket-level ratings to validate and calibrate the score, (2) labelling Stage-1 stall crops to close the domain gap, and (3) comparing against a joint ripeness-aware detector, a box-only Stage~1 and zero-shot multimodal models on the same basket-level benchmark.
+Pile-to-Score is a decoupled segmentation--classification pipeline that turns one photograph of a market-stall pile into a heuristic basket-level visual quality score, instantiated for four fruits, released openly and integrated as a prototype into a vendor marketplace application. Crop classifiers reach 92--99\% held-out accuracy, robust to near-duplicate removal; segmenters reach 80--94\% mask mAP50 on clean test splits, and 82\% for banana after a manually verified leakage audit replaced an inflated 97\%. A controlled ablation shows that a box-only detector localises fruit as well as the segmenter at this data scale, and a threshold analysis shows that the quality gate is driven by Stage-1 fruit counts. The most important next steps are (1) collecting human basket-level ratings to validate and calibrate the score, (2) collecting stall-domain data for both stages to close the domain gap, especially for tomato, (3) adding a fruit-identity check, and (4) comparing against a joint ripeness-aware detector and zero-shot multimodal models on the same basket-level benchmark.
 
 \section*{Data and Code Availability}
-All trained weights (including the leak-free banana segmenter), the inference pipeline, evaluation and audit scripts and per-model metrics are available at \url{https://github.com/WasayAbid/pile-to-score}.
+All trained weights (including the leak-free banana segmenter), the inference pipeline, evaluation and audit scripts and per-model metrics are available at \url{https://github.com/WasayAbid/pile-to-score}. Third-party datasets are not redistributed.
 
 \small
 \begin{thebibliography}{99}
@@ -313,6 +389,6 @@ All trained weights (including the leak-free banana segmenter), the inference pi
 \bibitem{szegedy2016} C.~Szegedy, V.~Vanhoucke, S.~Ioffe, J.~Shlens, and Z.~Wojna. Rethinking the Inception architecture for computer vision. In \emph{CVPR}, 2016.
 \bibitem{rf_banana} Mahasarakham University. Banana ripeness classification dataset (banana-ripeness-c3a2v). Roboflow Universe. \url{https://universe.roboflow.com/mahasarakham-university-yeff9/banana-ripeness-c3a2v}. Accessed May 2026.
 \bibitem{rf_mango} cadimedia. MangoRipenessDetection dataset. Roboflow Universe. \url{https://universe.roboflow.com/cadimedia/mangoripenessdetection}. Accessed May 2026.
-\bibitem{rf_apple} Apple freshness (fresh/rotten) classification dataset, Roboflow Universe export. Source URL: \textit{[to be added]}.
+\bibitem{rf_apple} Apple fresh/rotten classification dataset (classes \emph{fresh}, \emph{rotten}; 1{,}406/401/199 images), obtained as a Roboflow Universe export (\texttt{apple Freshness.zip}) in 2026. The originating project page could not be re-identified at the time of writing; for this reason no apple classifier result is reported in this paper.
 \end{thebibliography}
 \end{document}

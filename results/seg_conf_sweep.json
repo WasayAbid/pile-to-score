@@ -1,0 +1,143 @@
+{
+  "banana": {
+    "gt_instances": 632,
+    "by_conf": {
+      "0.1": {
+        "matched": 521,
+        "false_det": 211,
+        "missed": 111,
+        "recall": 0.8243670886075949,
+        "precision": 0.7117486338797814
+      },
+      "0.15": {
+        "matched": 508,
+        "false_det": 151,
+        "missed": 124,
+        "recall": 0.8037974683544303,
+        "precision": 0.7708649468892261
+      },
+      "0.2": {
+        "matched": 483,
+        "false_det": 115,
+        "missed": 149,
+        "recall": 0.7642405063291139,
+        "precision": 0.8076923076923077
+      },
+      "0.3": {
+        "matched": 441,
+        "false_det": 78,
+        "missed": 191,
+        "recall": 0.6977848101265823,
+        "precision": 0.8497109826589595
+      },
+      "0.4": {
+        "matched": 399,
+        "false_det": 52,
+        "missed": 233,
+        "recall": 0.6313291139240507,
+        "precision": 0.88470066518847
+      },
+      "0.5": {
+        "matched": 338,
+        "false_det": 34,
+        "missed": 294,
+        "recall": 0.5348101265822784,
+        "precision": 0.9086021505376344
+      }
+    }
+  },
+  "mango": {
+    "gt_instances": 254,
+    "by_conf": {
+      "0.1": {
+        "matched": 229,
+        "false_det": 24,
+        "missed": 25,
+        "recall": 0.9015748031496063,
+        "precision": 0.9051383399209486
+      },
+      "0.15": {
+        "matched": 226,
+        "false_det": 24,
+        "missed": 28,
+        "recall": 0.889763779527559,
+        "precision": 0.904
+      },
+      "0.2": {
+        "matched": 225,
+        "false_det": 18,
+        "missed": 29,
+        "recall": 0.8858267716535433,
+        "precision": 0.9259259259259259
+      },
+      "0.3": {
+        "matched": 221,
+        "false_det": 12,
+        "missed": 33,
+        "recall": 0.8700787401574803,
+        "precision": 0.9484978540772532
+      },
+      "0.4": {
+        "matched": 218,
+        "false_det": 9,
+        "missed": 36,
+        "recall": 0.8582677165354331,
+        "precision": 0.960352422907489
+      },
+      "0.5": {
+        "matched": 212,
+        "false_det": 9,
+        "missed": 42,
+        "recall": 0.8346456692913385,
+        "precision": 0.9592760180995475
+      }
+    }
+  },
+  "apple": {
+    "gt_instances": 833,
+    "by_conf": {
+      "0.1": {
+        "matched": 777,
+        "false_det": 544,
+        "missed": 56,
+        "recall": 0.9327731092436975,
+        "precision": 0.5881907645722937
+      },
+      "0.15": {
+        "matched": 764,
+        "false_det": 503,
+        "missed": 69,
+        "recall": 0.9171668667466987,
+        "precision": 0.6029992107340174
+      },
+      "0.2": {
+        "matched": 756,
+        "false_det": 462,
+        "missed": 77,
+        "recall": 0.907563025210084,
+        "precision": 0.6206896551724138
+      },
+      "0.3": {
+        "matched": 744,
+        "false_det": 405,
+        "missed": 89,
+        "recall": 0.8931572629051621,
+        "precision": 0.6475195822454308
+      },
+      "0.4": {
+        "matched": 726,
+        "false_det": 367,
+        "missed": 107,
+        "recall": 0.8715486194477791,
+        "precision": 0.6642268984446478
+      },
+      "0.5": {
+        "matched": 711,
+        "false_det": 334,
+        "missed": 122,
+        "recall": 0.8535414165666266,
+        "precision": 0.6803827751196172
+      }
+    }
+  }
+}

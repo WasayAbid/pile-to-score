@@ -1,0 +1,74 @@
+{
+  "banana_det": {
+    "box_mAP50": 0.8230042001151405,
+    "box_mAP50_95": 0.5561953788737981,
+    "box_P": 0.8059053766931428,
+    "box_R": 0.7321711568938193,
+    "mask_mAP50": null,
+    "params_M": 25.840339,
+    "size_MB": 52.022226,
+    "gpu_ms": 22.66953636370255,
+    "cpu_ms": 175.46577272729667,
+    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\banana_det_p2\\weights\\best.pt"
+  },
+  "banana_seg": {
+    "box_mAP50": 0.8384570749686105,
+    "box_mAP50_95": 0.556638670790207,
+    "box_P": 0.8064642895946965,
+    "box_R": 0.759438763473487,
+    "mask_mAP50": 0.8207425854931777,
+    "params_M": 27.222963,
+    "size_MB": 54.814108,
+    "gpu_ms": 27.750045454674613,
+    "cpu_ms": 269.2523090906682,
+    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\banana_p2\\weights\\best.pt"
+  },
+  "mango_det": {
+    "box_mAP50": 0.9379671646685204,
+    "box_mAP50_95": 0.7959521686595157,
+    "box_P": 0.9216249452704711,
+    "box_R": 0.8796263016111312,
+    "mask_mAP50": null,
+    "params_M": 25.840339,
+    "size_MB": 52.032786,
+    "gpu_ms": 25.837772727424056,
+    "cpu_ms": 206.1883636365978,
+    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\mango_det_p2\\weights\\best.pt"
+  },
+  "mango_seg": {
+    "box_mAP50": 0.9391828116029755,
+    "box_mAP50_95": 0.7786452424836988,
+    "box_P": 0.9235956941073025,
+    "box_R": 0.8661417322834646,
+    "mask_mAP50": 0.9368278925439445,
+    "params_M": 27.222963,
+    "size_MB": 54.825564,
+    "gpu_ms": 33.17581818191684,
+    "cpu_ms": 287.7571272727602,
+    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\mango_seg_p2\\weights\\best.pt"
+  },
+  "apple_det": {
+    "box_mAP50": 0.8037070154694491,
+    "box_mAP50_95": 0.6522818717783411,
+    "box_P": 0.7414068425016926,
+    "box_R": 0.8201501181143652,
+    "mask_mAP50": null,
+    "params_M": 25.840339,
+    "size_MB": 52.032786,
+    "gpu_ms": 30.976253846557274,
+    "cpu_ms": 378.6191769227466,
+    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\apple_det_p2\\weights\\best.pt"
+  },
+  "apple_seg": {
+    "box_mAP50": 0.7957400672566166,
+    "box_mAP50_95": 0.646356996341254,
+    "box_P": 0.6935160094042035,
+    "box_R": 0.8425480769230769,
+    "mask_mAP50": 0.7852426672874131,
+    "params_M": 27.222963,
+    "size_MB": 54.830428,
+    "gpu_ms": 37.00443846229553,
+    "cpu_ms": 336.17987692307975,
+    "weights": "C:\\Users\\abdul\\AppData\\Local\\Temp\\claude\\28a4b4ef762bc00a\\2047be5d-e722-41dd-a62c-50a9417732a9\\scratchpad\\train_runs\\apple_seg_p2\\weights\\best.pt"
+  }
+}
